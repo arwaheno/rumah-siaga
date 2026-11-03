@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: #f4f7f8;
+  color: #1f2d3a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fokus yang jelas untuk aksesibilitas */
+:focus-visible {
+  outline: 2px solid #168c8c;
+  outline-offset: 2px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl2 border border-line bg-white shadow-card;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-teal text-white hover:bg-teal-dark;
+  }
+  .btn-secondary {
+    @apply btn border border-line bg-white text-navy hover:bg-surface;
+  }
+  .btn-ghost {
+    @apply btn text-navy hover:bg-surface;
+  }
+  .btn-danger {
+    @apply btn bg-danger text-white hover:opacity-90;
+  }
+  .input {
+    @apply w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/20;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Laporan cetak (A4)                                                  */
+/* ------------------------------------------------------------------ */
+
+.report-stage {
+  padding: 20px 12px 40px;
+  overflow-x: auto;
+}
+
+/* Layar: lembar A4 penuh. Tinggi minimum (bukan tetap) agar isi tidak pernah terpotong. */
+.report-sheet {
+  width: 210mm;
+  min-height: 297mm;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto 16px;
+  background: #fff;
+  color: #1f2d3a;
+  padding: 14mm 14mm 12mm;
+  box-shadow: 0 2px 14px rgba(16, 42, 67, 0.12);
+  box-sizing: border-box;
+}
+
+.report-avoid-break {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+@page {
+  size: A4;
+  margin: 10mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .report-stage {
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  .print-root {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  /* Area cetak = 297mm - 2 x 10mm margin = 277mm; sisakan 1mm agar tidak ada halaman kosong. */
+  .report-sheet {
+    width: auto;
+    min-height: 276mm;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+  .report-sheet:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+  table {
+    break-inside: auto;
+  }
+  tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  thead {
+    display: table-header-group;
+  }
+}
